@@ -1,20 +1,23 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello ProfileController!{% endblock %}
-
+{% block title %}User Profile{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>D:/first_symfony_project/src/Controller/ProfileController.php</code></li>
-        <li>Your template at <code>D:/first_symfony_project/templates/profile/index.html.twig</code></li>
-    </ul>
+<div class="profile-container">
+    {% set total = 0 %}
+    <h1 class="profile-title">Имя пользователя: {{ user.username }}</h1>
+    <h2 class="portfolio-title">Портфели пользователя:</h2>
+    {% for portfolio in user.portfolios %}
+        <div class="portfolio">
+            <span class="portfolio-info">Портфель номер {{ portfolio.id }} имеет {{ portfolio.balance }} валюты и ценные бумаги:</span>
+            <ul class="stock-list">
+                {% for depositary in portfolio.depositaries %}
+                    {% set total = total + depositary.quantity %}
+                    <li class="stock-item">
+                        Название ценной бумаги: {{ depositary.stock.name }}, количество: {{ depositary.quantity }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+    <h2 class="total-title">Общее количество: {{ total }}</h2>
 </div>
 {% endblock %}
